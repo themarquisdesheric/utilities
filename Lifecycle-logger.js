@@ -18,9 +18,32 @@ var H2 = styled.h2`
 H2.displayName = 'H2';
 
 export default function Loggify(WrappedComponent) {
+  var originals = {};
+  var methodsToLog = ['componentWillMount', 'componentDidMount', 'componenWillUnmount'];
+
+  methodsToLog.forEach(function(method) {
+    if (WrappedComponent.prototype[method]) {
+      originals[method] = WrappedComponent.prototype[method];
+    }
+
+    WrappedComponent.prototype[method] = function(...args) {
+      var original = originals[method];
+
+      console.groupCollapsed(`${WrappedComponent.displayName} called ${method}`);
+      console.groupEnd();
+
+      if (original) {
+        original = original.bind(this);
+        original(...args);
+      }
+    };
+
+  });
+
   return class extends Component {
     render() {
       return (
+
         <LoggerContainer>
           <H2>
             {WrappedComponent.displayName} is now loggified: 
@@ -29,6 +52,7 @@ export default function Loggify(WrappedComponent) {
             {...this.props}
           />
         </LoggerContainer>
+        
       );
     }
   };

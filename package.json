@@ -23,5 +23,8 @@
   "bugs": {
     "url": "https://github.com/themarquisdesheric/utilities/issues"
   },
-  "homepage": "https://github.com/themarquisdesheric/utilities#readme"
+  "homepage": "https://github.com/themarquisdesheric/utilities#readme",
+  "eslintConfig": {
+    "extends": "react-app"
+  }
 }
