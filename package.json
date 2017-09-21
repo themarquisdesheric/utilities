@@ -1,0 +1,30 @@
+{
+  "name": "utilities",
+  "version": "1.0.0",
+  "description": "helpers FTW!",
+  "main": "Lifecycle-logger.js",
+  "dependencies": {
+    "eslint": "^4.5.0",
+    "react": "^15.6.1",
+    "react-dom": "^15.6.1",
+    "styled-components": "^2.1.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/themarquisdesheric/utilities.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/themarquisdesheric/utilities/issues"
+  },
+  "homepage": "https://github.com/themarquisdesheric/utilities#readme",
+  "eslintConfig": {
+    "extends": "react-app"
+  }
+}
