@@ -19,7 +19,7 @@ H2.displayName = 'H2';
 
 export default function Loggify(WrappedComponent) {
   var originals = {};
-  var methodsToLog = ['componentWillMount', 'componentDidMount', 'componenWillUnmount'];
+  var methodsToLog = ['componentWillMount', 'componentDidMount', 'componenWillUnmount', 'setState'];
 
   methodsToLog.forEach(function(method) {
     if (WrappedComponent.prototype[method]) {
@@ -36,6 +36,15 @@ export default function Loggify(WrappedComponent) {
         original = original.bind(this);
         original(...args);
       }
+    };
+
+    WrappedComponent.prototype.setState = function(partialState, callback) {
+      console.groupCollapsed(`${WrappedComponent.displayName} setState`);
+      console.log('partialState', partialState);
+      console.log('callback', callback);
+      console.groupEnd();
+
+      this.updater.enqueueSetState(this, partialState, callback, 'setState');
     };
 
   });
