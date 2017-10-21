@@ -20,7 +20,9 @@ export default function Loggify(WrappedComponent) {
     'componentDidMount',
     'componenWillUnmount',
     'componentWillReceiveProps',
-    'shouldComponentUpdate'
+    'shouldComponentUpdate',
+    'componentWillUpdate',
+    'componentDidUpdate'
   ];
 
   methodsToLog.forEach(function(method) {
@@ -35,13 +37,22 @@ export default function Loggify(WrappedComponent) {
 
       if (
         method === 'componentWillReceiveProps' || 
-                   'shouldComponentUpdate'
+                   'shouldComponentUpdate' ||
+                   'componentWillUpdate'
       ) {
         console.log('nextProps', args[0]);
       }
       
-      if (method === 'shouldComponentUpdate') {
+      if (
+        method === 'shouldComponentUpdate' ||
+                   'componentWillUpdate'
+      ) {
         console.log('nextState', args[1]);
+      }
+
+      if (method === 'componentDidUpdate') {
+        console.log('prevProps', args[0]);
+        console.log('prevState', args[1]);
       }
 
       console.groupEnd();
@@ -73,7 +84,6 @@ export default function Loggify(WrappedComponent) {
   return class extends Component {
     render() {
       return (
-
         <LoggerContainer>
           <H2>
             {WrappedComponent.displayName} is now loggified: 
@@ -82,7 +92,6 @@ export default function Loggify(WrappedComponent) {
             {...this.props}
           />
         </LoggerContainer>
-        
       );
     }
   };
