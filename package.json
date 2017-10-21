@@ -4,12 +4,14 @@
   "description": "helpers FTW!",
   "main": "Lifecycle-logger.js",
   "dependencies": {
-    "eslint": "^4.5.0",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
     "styled-components": "^2.1.2"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "eslint": "^4.5.0",
+    "react-scripts": "^1.0.13"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
