@@ -1,5 +1,3 @@
-// a HOC that logs the lifecycle methods of react components
-
 import React, { Component } from 'react';
 import styled from 'styled-components';
 
@@ -11,15 +9,21 @@ var LoggerContainer = styled.div`
 
 LoggerContainer.displayName = 'LoggerContainer';
 
-var H2 = styled.h2`
-  color: blueviolet;
-`;
+var H2 = styled.h2` color: blueviolet; `;
 
 H2.displayName = 'H2';
 
 export default function Loggify(WrappedComponent) {
   var originals = {};
-  var methodsToLog = ['componentWillMount', 'componentDidMount', 'componenWillUnmount', 'setState'];
+  var methodsToLog = [
+    'componentWillMount',
+    'componentDidMount',
+    'componenWillUnmount',
+    'componentWillReceiveProps',
+    'shouldComponentUpdate',
+    'componentWillUpdate',
+    'componentDidUpdate'
+  ];
 
   methodsToLog.forEach(function(method) {
     if (WrappedComponent.prototype[method]) {
@@ -30,12 +34,40 @@ export default function Loggify(WrappedComponent) {
       var original = originals[method];
 
       console.groupCollapsed(`${WrappedComponent.displayName} called ${method}`);
+
+      if (
+        method === 'componentWillReceiveProps' || 
+                   'shouldComponentUpdate' ||
+                   'componentWillUpdate'
+      ) {
+        console.log('nextProps', args[0]);
+      }
+      
+      if (
+        method === 'shouldComponentUpdate' ||
+                   'componentWillUpdate'
+      ) {
+        console.log('nextState', args[1]);
+      }
+
+      if (method === 'componentDidUpdate') {
+        console.log('prevProps', args[0]);
+        console.log('prevState', args[1]);
+      }
+
       console.groupEnd();
 
       if (original) {
         original = original.bind(this);
-        original(...args);
+        return original(...args);
       }
+
+      if (
+        method === 'shouldComponentUpdate' &&
+        typeof original === 'undefined'
+      ) {
+        return true;
+      } 
     };
 
     WrappedComponent.prototype.setState = function(partialState, callback) {
@@ -52,7 +84,6 @@ export default function Loggify(WrappedComponent) {
   return class extends Component {
     render() {
       return (
-
         <LoggerContainer>
           <H2>
             {WrappedComponent.displayName} is now loggified: 
@@ -61,7 +92,6 @@ export default function Loggify(WrappedComponent) {
             {...this.props}
           />
         </LoggerContainer>
-        
       );
     }
   };
